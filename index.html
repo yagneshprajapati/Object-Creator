@@ -12,7 +12,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            perspective: 800px;
         }
 
         .container {
@@ -20,10 +19,8 @@
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            width: 300px;
+            max-width: 400px;
             text-align: center;
-            transform-style: preserve-3d;
-            transform: rotateX(20deg);
         }
 
         h1 {
@@ -52,7 +49,7 @@
             width: 100%;
             padding: 10px;
             background-color: #2B282B;
-            color: #abcdef;
+            color: #ffffff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -87,6 +84,12 @@
         #toggleButton {
             margin-top: 10px;
         }
+
+        #clearButton {
+            margin-top: 10px;
+            background-color: #ccc;
+            color: #000000;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
 </head>
@@ -95,20 +98,16 @@
         <h1>Object Creator</h1>
         <form id="entryForm">
             <label for="topic">Topic Name:</label>
-            <input type="text" id="topic" name="topic" required><br>
+            <input type="text" id="topic" name="topic" placeholder="Enter a topic name" required autofocus><br>
             <label for="solution">Solution:</label>
-            <textarea id="solution" name="solution" rows="4" required></textarea><br>
+            <textarea id="solution" name="solution" rows="4" placeholder="Enter the solution" required></textarea><br>
             <input type="submit" value="Create Object">
+            <button id="clearButton" type="button">Clear</button>
         </form>
 
-        <div id="dataContainer">
-            <button id="toggleButton">View Created Objects</button>
-            <div id="dataForm">
-                <h2>Created Objects:</h2>
-                <div id="objectList"></div>
-                <button id="copyButton">Copy Data</button>
-            </div>
-        </div>
+        <div id="dataContainer"></div>
+        <button id="toggleButton" type="button">View Created Objects</button>
+        <button id="copyButton" type="button">Copy Data</button>
     </div>
 
     <script>
@@ -134,7 +133,7 @@
         }
 
         function displayData() {
-            var objectList = document.getElementById("objectList");
+            var objectList = document.getElementById("dataContainer");
             objectList.innerHTML = "";
 
             objects.forEach(function(object, index) {
@@ -165,9 +164,18 @@
             }
         }
 
+        function clearForm() {
+            var topicInput = document.getElementById("topic");
+            var solutionInput = document.getElementById("solution");
+
+            topicInput.value = "";
+            solutionInput.value = "";
+        }
+
         document.getElementById("entryForm").addEventListener("submit", createObject);
         document.getElementById("toggleButton").addEventListener("click", toggleDataForm);
         document.getElementById("copyButton").addEventListener("click", copyData);
+        document.getElementById("clearButton").addEventListener("click", clearForm);
     </script>
 </body>
 </html>
