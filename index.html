@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Object Creator</title>
+    <style>
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            background: linear-gradient(to bottom right, #4F6D7A, #4F4F7B);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"],
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #2B282B;
+            color: #abcdef;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #dataContainer {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+        }
+
+        .object {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        pre {
+            margin: 0;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Object Creator</h1>
+        <form id="objectForm">
+            <label for="topic">Topic Name:</label>
+            <input type="text" id="topic" name="topic" required><br>
+            <label for="solution">Solution:</label>
+            <textarea id="solution" name="solution" rows="4" required></textarea><br>
+            <input type="submit" value="Create Object">
+        </form>
+
+        <div id="dataContainer"></div>
+        <button id="copyButton">Copy Data</button>
+    </div>
+
+    <script>
+        var objects = [];
+
+        function createObject(event) {
+            event.preventDefault();
+
+            var topicInput = document.getElementById("topic");
+            var solutionInput = document.getElementById("solution");
+
+            var object = {
+                topic: topicInput.value,
+                solution: solutionInput.value
+            };
+
+            objects.push(object);
+
+            topicInput.value = "";
+            solutionInput.value = "";
+
+            displayData();
+        }
+
+        function displayData() {
+            var dataContainer = document.getElementById("dataContainer");
+            dataContainer.innerHTML = "";
+
+            objects.forEach(function(object, index) {
+                var objectDiv = document.createElement("div");
+                var comma = index !== objects.length - 1 ? "," : "";
+                objectDiv.innerHTML = "<pre>" + JSON.stringify(object, null, 4) + comma + "</pre>";
+                dataContainer.appendChild(objectDiv);
+            });
+        }
+
+        function copyData() {
+            var dataToCopy = JSON.stringify(objects, null, 4);
+            navigator.clipboard.writeText(dataToCopy).then(function() {
+                alert("Data copied to clipboard!");
+            });
+        }
+
+        document.getElementById("objectForm").addEventListener("submit", createObject);
+        document.getElementById("copyButton").addEventListener("click", copyData);
+    </script>
+</body>
+</html>
