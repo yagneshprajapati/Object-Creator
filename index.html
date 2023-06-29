@@ -74,13 +74,21 @@
         pre {
             margin: 0;
         }
+
+        #dataForm {
+            display: none;
+        }
+
+        #toggleButton {
+            margin-top: 10px;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Object Creator</h1>
-        <form id="objectForm">
+        <form id="entryForm">
             <label for="topic">Topic Name:</label>
             <input type="text" id="topic" name="topic" required><br>
             <label for="solution">Solution:</label>
@@ -88,8 +96,14 @@
             <input type="submit" value="Create Object">
         </form>
 
-        <div id="dataContainer"></div>
-        <button id="copyButton">Copy Data</button>
+        <div id="dataContainer">
+            <button id="toggleButton">View Created Objects</button>
+            <div id="dataForm">
+                <h2>Created Objects:</h2>
+                <div id="objectList"></div>
+                <button id="copyButton">Copy Data</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -115,14 +129,14 @@
         }
 
         function displayData() {
-            var dataContainer = document.getElementById("dataContainer");
-            dataContainer.innerHTML = "";
+            var objectList = document.getElementById("objectList");
+            objectList.innerHTML = "";
 
             objects.forEach(function(object, index) {
                 var objectDiv = document.createElement("div");
                 var comma = index !== objects.length - 1 ? "," : "";
                 objectDiv.innerHTML = "<pre>" + JSON.stringify(object, null, 4) + comma + "</pre>";
-                dataContainer.appendChild(objectDiv);
+                objectList.appendChild(objectDiv);
             });
         }
 
@@ -133,7 +147,21 @@
             });
         }
 
-        document.getElementById("objectForm").addEventListener("submit", createObject);
+        function toggleDataForm() {
+            var dataForm = document.getElementById("dataForm");
+            var toggleButton = document.getElementById("toggleButton");
+
+            if (dataForm.style.display === "none") {
+                dataForm.style.display = "block";
+                toggleButton.textContent = "Hide Created Objects";
+            } else {
+                dataForm.style.display = "none";
+                toggleButton.textContent = "View Created Objects";
+            }
+        }
+
+        document.getElementById("entryForm").addEventListener("submit", createObject);
+        document.getElementById("toggleButton").addEventListener("click", toggleDataForm);
         document.getElementById("copyButton").addEventListener("click", copyData);
     </script>
 </body>
